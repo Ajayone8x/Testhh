@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>JW Player HLS Example</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- JW Player -->
+  <script src="https://cdn.jwplayer.com/libraries/SAHhwvZq.js"></script>
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: black;
+      height: 100%;
+    }
+    #player {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+
+<div id="player"></div>
+
+<script>
+  jwplayer("player").setup({
+    file: "https://sonymtmnew.akamaized.net/v1/master/cf6c1a8acbbb40a9b94e083a0c84baaf7d037980/Live_event5_adm/2105079/DAI08ME-V3/master_lrl.m3u8?hdnea=exp=1755063009~acl=/*~id=24541679128071449300005070777710~hmac=c754c869e6c3dac944ba4c62cb7c55c471e4ae41d1e32b149ef36c67234b97b9", // 🔹 Replace with your HLS link
+    type: "hls",
+    autostart: true,
+    width: "100%",
+    height: "100%",
+    stretching: "uniform",
+    primary: "html5",
+    controls: true,
+    mute: false
+  });
+</script>
+
+</body>
+</html>
