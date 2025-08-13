@@ -1,43 +1,134 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>JW Player HLS Example</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- JW Player -->
-  <script src="https://cdn.jwplayer.com/libraries/SAHhwvZq.js"></script>
-
+  <meta charset="UTF-8" />
+  <title>Sony Ten 3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.4.0/dist/hls.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dplayer@1.26.0/dist/DPlayer.min.js"></script>
   <style>
     html, body {
       margin: 0;
       padding: 0;
-      background: black;
+      background: #000;
       height: 100%;
+      width: 100%;
+      overflow: hidden;
     }
-    #player {
+    #dplayer {
       width: 100%;
       height: 100%;
+    }
+    /* Popup overlay */
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    .popup-box {
+      background: #1a1a1a;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 300px;
+      width: 90%;
+      text-align: center;
+      color: white;
+      font-family: Arial, sans-serif;
+      box-shadow: 0 0 20px rgba(255,140,0,0.5);
+    }
+    .popup-box h2 {
+      margin-top: 0;
+      font-size: 1.5rem;
+      color: orange;
+    }
+    .popup-box p {
+      font-size: 0.9rem;
+      margin: 10px 0 20px;
+      color: #ccc;
+    }
+    .popup-box button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .join-btn {
+      background-color: orange;
+      color: black;
+      font-weight: bold;
+    }
+    .joined-btn {
+      background-color: #444;
+      color: white;
     }
   </style>
 </head>
 <body>
+  <div id="dplayer"></div>
 
-<div id="player"></div>
+  <!-- Telegram Popup -->
+  <div class="popup-overlay" id="telegramPopup">
+    <div class="popup-box">
+      <h2>Support Us!</h2>
+      <p>Join our Telegram channel <b>@cricketcorner</b> for more updates.</p>
+      <button class="join-btn" onclick="window.open('https://t.me/The_Cricket_Corner','_blank')">Join Now</button>
+      <button class="joined-btn" onclick="closePopup()">Already Joined</button>
+    </div>
+  </div>
 
-<script>
-  jwplayer("player").setup({
-    file: "https://sonymtmnew.akamaized.net/v1/master/cf6c1a8acbbb40a9b94e083a0c84baaf7d037980/Live_event5_adm/2105079/DAI08ME-V3/master_lrl.m3u8?hdnea=exp=1755063009~acl=/*~id=24541679128071449300005070777710~hmac=c754c869e6c3dac944ba4c62cb7c55c471e4ae41d1e32b149ef36c67234b97b9", // 🔹 Replace with your HLS link
-    type: "hls",
-    autostart: true,
-    width: "100%",
-    height: "100%",
-    stretching: "uniform",
-    primary: "html5",
-    controls: true,
-    mute: false
-  });
-</script>
+  <script>
+    // DPlayer setup
+    const dp = new DPlayer({
+      container: document.getElementById('dplayer'),
+      autoplay: true,
+      volume: 0.8,
+      video: {
+        url: 'https://tataplay.slivcdn.com/hls/live/2011747/TEN1HD/master_3500.m3u8',
+        type: 'hls'
+      }
+    });
 
+    // Force autoplay with sound
+    const tryAutoPlay = async () => {
+      const video = dp.video;
+      try {
+        video.muted = false;
+        video.volume = 0.8;
+        await video.play();
+      } catch {
+        try {
+          video.muted = true;
+          await video.play();
+          video.muted = false;
+        } catch {}
+      }
+    };
+    tryAutoPlay();
+
+    ['click', 'touchstart', 'keydown'].forEach(evt =>
+      document.addEventListener(evt, () => {
+        if (dp.video.muted) {
+          dp.video.muted = false;
+          dp.video.volume = 0.8;
+        }
+      }, { once: true })
+    );
+
+    // Popup close
+    function closePopup() {
+      document.getElementById('telegramPopup').style.display = 'none';
+    }
+  </script>
 </body>
 </html>
